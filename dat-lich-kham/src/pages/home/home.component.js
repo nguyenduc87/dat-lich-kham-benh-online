@@ -1,20 +1,17 @@
 import { 
     Banner, 
-    BannerContentForm, 
     Container, 
     Content, 
     GeneralInfo, 
     GeneralText, 
     BannerImg, 
     ImgText, 
-    InputBox, 
     Item, 
     ItemContent, 
     ItemImg, 
     ItemMoreInfo, 
     ItemTitle, 
     ItemTitleText, 
-    Text,
     BenhVienInfo,
     StyleLink,
     BenhVienImg,
@@ -24,16 +21,14 @@ import {
 
 import banner from './banner.jpg';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBacSi, fetchChuyenKhoa, fetchCoSoYTe } from '../../redux/home/home.slice';
 import BackToTop from '../../components/back-to-top/back-to-top.component';
-import { fetchListChuyenKhoa } from '../../redux/chuyen-khoa/chuyen-khoa.slice';
-import { useNavigate } from 'react-router-dom';
+import SearchBox from '../../components/search-box/search-box.component';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { cacChuyenKhoa, cacCoSoYTe, cacBacSi } = useSelector(state => state.home);
 
     useEffect(() => {
@@ -41,21 +36,6 @@ const Home = () => {
         dispatch(fetchCoSoYTe());
         dispatch(fetchBacSi());
     }, [])
-
-    const [search, setSearch] = useState('');
-    const hanldeOnSubmit = async (event) => {
-        event.preventDefault();
-        const result = await dispatch(fetchListChuyenKhoa());
-        const listChuyenKhoa = result.payload;
-        const target = listChuyenKhoa.find(
-            item => item.name.toLowerCase().includes(search.toLowerCase())
-        );
-        if (target) {
-            navigate(`/chi-tiet-chuyen-khoa/${target.id}`)
-        } else {
-            alert('Vui lòng thử lại.')
-        }
-    }
 
     return (
         <Container>
@@ -65,16 +45,7 @@ const Home = () => {
                     src={banner}
                     alt='banner-dat-lich-kham-online'
                 />
-                <BannerContentForm 
-                    onSubmit={hanldeOnSubmit}
-                >
-                    <Text>Đặt khám với bác sĩ chuyên khoa và bệnh viện danh tiếng</Text>
-                    <InputBox 
-                        placeholder='Tìm chuyên khoa' 
-                        value={search}
-                        onChange={event => setSearch(event.target.value)}
-                    />
-                </BannerContentForm>
+                <SearchBox />
             </Banner>
             
             <Content>
@@ -150,7 +121,6 @@ const Home = () => {
                 </Item>
             </Content>
         </Container>
-
     )
 }
 

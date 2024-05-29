@@ -5,7 +5,6 @@ import {
 
 import Api from "../../helpers/api/api";
 import { apiNoAuth } from "../../helpers/api/api";
-import { router } from "../../index";
 
 const initialState = {
     currentUser: null,

@@ -7,6 +7,7 @@ import Api from "../../helpers/api/api";
 const initialState = {
     cacChuyenKhoa: [],
     chuyenKhoa: null,
+    tenChuyenKhoa: null
 }
 
 const ChuyenKhoaSlice = createSlice({
@@ -24,6 +25,10 @@ const ChuyenKhoaSlice = createSlice({
         .addCase(fetchDetailChuyenKhoa.fulfilled, (state, action) => {
             const { payload } = action;
             state.chuyenKhoa = payload;
+        })
+        .addCase(fetchTenChuyenKhoa.fulfilled, (state, action) => {
+            const { payload } = action;
+            state.tenChuyenKhoa = payload;
         })
     }
 })
@@ -47,7 +52,7 @@ export const fetchListChuyenKhoa = createAsyncThunk (
         return cacChuyenKhoa;
     }
 )
-// Load chi tiết chuyên khoa
+// Load chi tiết chuyên khoa theo id
 export const fetchDetailChuyenKhoa = createAsyncThunk (
     'chuyenKhoa/fetchDetailChuyenKhoa',
     async (id) => {
@@ -59,6 +64,15 @@ export const fetchDetailChuyenKhoa = createAsyncThunk (
 
         //axios
         const response = await Api.get(`chuyen-khoa/chi-tiet/${id}`);
+        const { chuyenKhoa } = response.data.data;
+        return chuyenKhoa;
+    }
+)
+
+export const fetchTenChuyenKhoa = createAsyncThunk (
+    'chuyenKhoa/fetchTenChuyenKhoa',
+    async (name) => {
+        const response = await Api.get(`ten-chuyen-khoa?name=${name}`);
         const { chuyenKhoa } = response.data.data;
         return chuyenKhoa;
     }
