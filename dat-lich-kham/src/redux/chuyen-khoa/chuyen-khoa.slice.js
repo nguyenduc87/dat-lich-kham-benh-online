@@ -72,7 +72,11 @@ export const fetchDetailChuyenKhoa = createAsyncThunk (
 export const fetchTenChuyenKhoa = createAsyncThunk (
     'chuyenKhoa/fetchTenChuyenKhoa',
     async (name) => {
-        const response = await Api.get(`ten-chuyen-khoa?name=${name}`);
+        const response = await Api.get('ten-chuyen-khoa', {
+            params: {
+                name: name
+            }
+        });
         const { chuyenKhoa } = response.data.data;
         return chuyenKhoa;
     }
